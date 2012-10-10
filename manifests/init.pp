@@ -63,8 +63,16 @@ class ceilometer (
 
   file {"/etc/ceilometer":
     ensure  => directory,
-    owner   => "ceilometer",
+    owner   => $::ceilometer::params::user,
     group   => "root",
+    mode    => 660,
+    require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
+  }
+
+  file {"/var/log/ceilometer":
+    ensure  => directory,
+    owner   => $::ceilometer::params::user,
+    group   => $::ceilometer::params::group,
     mode    => 660,
     require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
   }
@@ -85,8 +93,8 @@ class ceilometer (
 
   vcsrepo {"ceilometer":
     name     => $::ceilometer::params::install_dir,
-    owner    => "ceilometer",
-    group    => "ceilometer",
+    owner    => $::ceilometer::params::user,
+    group    => $::ceilometer::params::group,
     ensure   => present,
     provider => git,
     require  => [Package["git"], User["ceilometer"]],
@@ -124,5 +132,10 @@ class ceilometer (
     "DEFAULT/rabbit_user":          value => $rabbit_user;
     "DEFAULT/rabbit_password":      value => $rabbit_password;
     "DEFAULT/rabbit_virtual_host":  value => $rabbit_virtual_host;
+  }
+
+  exec {"python setup.py develop":
+    cwd  => $::ceilometer::params::install_dir,
+    path => [$::ceilometer::params::install_dir, "/usr/bin", "/usr/sbin"]
   }
 }
