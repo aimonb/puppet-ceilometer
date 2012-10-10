@@ -16,16 +16,16 @@ class ceilometer (
   $os_auth_user             = "ceilometer",
   $os_auth_password         = "ChangeMe",
 
-  $periodic_interval        = "600"
-  $control_exchange         = "ceilometer"
-  $metering_secret          = "Changem3"
-  $metering_topic           = "metering"
-  $nova_control_exchange    = "nova"
-  $glance_control_exchange  = "nova"
-  $glance_registry_host     = "localhost"
-  $glance_registry_port     = "9191"
-  $cinder_control_exchange  = "cinder"
-  $quantum_control_exchange = "quantum"
+  $periodic_interval        = "600",
+  $control_exchange         = "ceilometer",
+  $metering_secret          = "Changem3",
+  $metering_topic           = "metering",
+  $nova_control_exchange    = "nova",
+  $glance_control_exchange  = "nova",
+  $glance_registry_host     = "localhost",
+  $glance_registry_port     = "9191",
+  $cinder_control_exchange  = "cinder",
+  $quantum_control_exchange = "quantum",
 
   $rabbit_host          = "localhost",
   $rabbit_port          = "5672",
@@ -37,22 +37,22 @@ class ceilometer (
 
   Vcsrepo["ceilometer"] -> Ceilometer_config<||>
 
-  validate_re($sql_connection, '(sqlite|mysql|posgres)|mongodb:\/\/(\S+:\S+@\S+\/\S+)?')
+  validate_re($database_connection, '(sqlite|mysql|posgres)|mongodb:\/\/(\S+:\S+@\S+\/\S+)?')
 
-  case $sql_connection  {
-    /mysql:\/\/\S+:\S+@\S+\/\S+/    {
-      $database_connection = "python-mysqldb"
+  case $database_connection  {
+    /mysql:\/\/\S+:\S+@\S+\/\S+/: {
+      $backend_package = "python-mysqldb"
     }
-    /postgres:\/\/\S+:\S+@\S+\/\S+/ {
-      $database_connection = "python-psycopg2"
+    /postgres:\/\/\S+:\S+@\S+\/\S+/: {
+      $backend_package = "python-psycopg2"
     }
-    /mongodb:\/\/\S+:\S+@\S+\/\S+/ {
-      $database_connection = "python-pymongo"
+    /mongodb:\/\/(\S+:\S+@|)\S+\/\S+/: {
+      $backend_package = "python-pymongo"
     }
-    /sqlite:\/\// {
-      $database_connection = "python-pysqlite2"
+    /sqlite:\/\//: {
+      $backend_package = "python-pysqlite2"
     }
-    default {
+    default: {
       fail("Unsupported backend configured")
     }
   }
@@ -79,14 +79,19 @@ class ceilometer (
     require => User["ceilometer"]
   }
 
+  package {"git":
+    ensure => present
+  }
+
   vcsrepo {"ceilometer":
     name     => $::ceilometer::params::install_dir,
     owner    => "ceilometer",
     group    => "ceilometer",
-    ensure   => $::ceilometer::params::revision,
+    ensure   => present,
     provider => git,
-    require  => [Package["git"], User["ceilometer"],
-    source   => $::ceilometer::params::source
+    require  => [Package["git"], User["ceilometer"]],
+    source   => $::ceilometer::params::source,
+    revision => $::ceilometer::params::revision
   }
 
   ceilometer_config {
@@ -113,5 +118,11 @@ class ceilometer (
     "DEFAULT/glance_registry_port":     value => $glance_registry_port;
     "DEFAULT/cinder_control_exchange":  value => $cinder_control_exchange;
     "DEFAULT/quantum_control_exchange": value => $quantum_control_exchange;
+
+    "DEFAULT/rabbit_host":          value => $rabbit_host;
+    "DEFAULT/rabbit_port":          value => $rabbit_port;
+    "DEFAULT/rabbit_user":          value => $rabbit_user;
+    "DEFAULT/rabbit_password":      value => $rabbit_password;
+    "DEFAULT/rabbit_virtual_host":  value => $rabbit_virtual_host;
   }
 }
