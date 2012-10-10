@@ -66,7 +66,27 @@ class ceilometer (
     owner   => "ceilometer",
     group   => "root",
     mode    => 660,
-    require => Vcsrepo["ceilometer"]
+    require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
+  }
+
+  user {"ceilometer":
+    comment => "Ceilometer user",
+    home    => $::ceilometer::params::install_dir,
+    shell   => "/bin/bash",
+  }
+
+  group {"ceilometer":
+    require => User["ceilometer"]
+  }
+
+  vcsrepo {"ceilometer":
+    name     => $::ceilometer::params::install_dir,
+    owner    => "ceilometer",
+    group    => "ceilometer",
+    ensure   => $::ceilometer::params::revision,
+    provider => git,
+    require  => [Package["git"], User["ceilometer"],
+    source   => $::ceilometer::params::source
   }
 
   ceilometer_config {
