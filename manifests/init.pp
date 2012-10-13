@@ -93,17 +93,6 @@ class ceilometer (
     }
   }
 
-  vcsrepo {"ceilometer":
-    name     => $::ceilometer::params::install_dir,
-    owner    => $::ceilometer::params::user,
-    group    => $::ceilometer::params::group,
-    ensure   => present,
-    provider => git,
-    require  => [Package["git"], User["ceilometer"]],
-    source   => $::ceilometer::params::source,
-    revision => $::ceilometer::params::revision
-  }
-
   ceilometer_config {
     "DEFAULT/debug":                  value => $log_debug;
     "DEFAULT/verbose":                value => $log_verbose;
@@ -136,8 +125,21 @@ class ceilometer (
     "DEFAULT/rabbit_virtual_host":  value => $rabbit_virtual_host;
   }
 
-  exec {"python setup.py develop":
-    cwd  => $::ceilometer::params::install_dir,
-    path => [$::ceilometer::params::install_dir, "/usr/bin", "/usr/sbin"]
+  vcsrepo {"ceilometer":
+    name     => $::ceilometer::params::install_dir,
+    owner    => $::ceilometer::params::user,
+    group    => $::ceilometer::params::group,
+    ensure   => present,
+    provider => git,
+    require  => [Package["git"], User["ceilometer"]],
+    source   => $::ceilometer::params::source,
+    revision => $::ceilometer::params::revision
+  }
+
+  exec {"ceilometer-install":
+    name    => "python setup.py develop",
+    cwd     => $::ceilometer::params::install_dir,
+    path    => [$::ceilometer::params::install_dir, "/usr/bin", "/usr/sbin"],
+    require => Vcsrepo["ceilometer"]
   }
 }

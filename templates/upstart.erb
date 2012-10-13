@@ -8,7 +8,7 @@ chdir /var/run
 
 pre-start script
     mkdir -p /var/run/ceilometer
-    chown quantum:root /var/run/ceilometer
+    chown ceilometer:root /var/run/ceilometer
 end script
 
 exec start-stop-daemon --start --chuid ceilometer --exec /usr/local/bin/<%= @name %> -- --config-file=/etc/ceilometer/ceilometer.conf --log-file=/var/log/ceilometer/<%= @name %>.log
