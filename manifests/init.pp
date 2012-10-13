@@ -87,8 +87,10 @@ class ceilometer (
     require => User["ceilometer"]
   }
 
-  package {"git":
-    ensure => present
+  if (!defined(Package["git"])) {
+    package {"git":
+     ensure => present
+    }
   }
 
   vcsrepo {"ceilometer":
