@@ -101,11 +101,11 @@ class ceilometer (
     "DEFAULT/database_connection":    value => $database_connection;
 
     "DEFAULT/os_auth_host":             value => $os_auth_host;
-    "DEFAULT/os_auth_port":             value => $os_auth_host;
-    "DEFAULT/os_auth_url":              value => $os_auth_host;
-    "DEFAULT/os_auth_tenant":           value => $os_auth_host;
-    "DEFAULT/os_auth_user":             value => $os_auth_host;
-    "DEFAULT/os_auth_password":         value => $os_auth_host;
+    "DEFAULT/os_auth_port":             value => $os_auth_port;
+    "DEFAULT/os_auth_url":              value => $os_auth_url;
+    "DEFAULT/os_auth_tenant":           value => $os_auth_tenant;
+    "DEFAULT/os_auth_user":             value => $os_auth_user;
+    "DEFAULT/os_auth_password":         value => $os_auth_password;
 
     "DEFAULT/periodic_interval":        value => $periodic_interval;
     "DEFAULT/control_exchange":         value => $control_exchange;
