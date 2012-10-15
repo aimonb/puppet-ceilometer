@@ -35,6 +35,8 @@ class ceilometer (
 ) {
   include ceilometer::params
 
+  require "git"
+
   Vcsrepo["ceilometer"] -> Ceilometer_config<||>
 
   validate_re($database_connection, '(sqlite|mysql|posgres)|mongodb:\/\/(\S+:\S+@\S+\/\S+)?')
@@ -85,12 +87,6 @@ class ceilometer (
 
   group {"ceilometer":
     require => User["ceilometer"]
-  }
-
-  if (!defined(Package["git"])) {
-    package {"git":
-     ensure => present
-    }
   }
 
   ceilometer_config {
