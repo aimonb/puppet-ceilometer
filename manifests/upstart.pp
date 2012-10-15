@@ -21,10 +21,11 @@ define ceilometer::upstart ($enabled) {
   }
 
   service {"${name}-service":
-    name     => $name,
-    ensure   => $service_ensure,
-    enable   => $enabled,
-    provider => upstart,
-    require  => File["${name}-upstart"]
+    name      => $name,
+    ensure    => $service_ensure,
+    enable    => $enabled,
+    provider  => upstart,
+    require   => File["${name}-upstart"],
+    subscribe => File["ceilometer-etc"]
   }
 }

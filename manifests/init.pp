@@ -63,22 +63,6 @@ class ceilometer (
     ensure => present
   }
 
-  file {"/etc/ceilometer":
-    ensure  => directory,
-    owner   => $::ceilometer::params::user,
-    group   => "root",
-    mode    => 660,
-    require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
-  }
-
-  file {"/var/log/ceilometer":
-    ensure  => directory,
-    owner   => $::ceilometer::params::user,
-    group   => $::ceilometer::params::group,
-    mode    => 660,
-    require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
-  }
-
   user {"ceilometer":
     comment => "Ceilometer user",
     home    => $::ceilometer::params::install_dir,
@@ -87,6 +71,24 @@ class ceilometer (
 
   group {"ceilometer":
     require => User["ceilometer"]
+  }
+
+  file {"ceilometer-etc":
+    name    => "/etc/ceilometer",
+    ensure  => directory,
+    owner   => $::ceilometer::params::user,
+    group   => "root",
+    mode    => 660,
+    require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
+  }
+
+  file {"ceilometer-var":
+    name    => "/var/log/ceilometer",
+    ensure  => directory,
+    owner   => $::ceilometer::params::user,
+    group   => $::ceilometer::params::group,
+    mode    => 660,
+    require => [Vcsrepo["ceilometer"], User["ceilometer"], Group["ceilometer"]]
   }
 
   ceilometer_config {
