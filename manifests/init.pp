@@ -1,38 +1,33 @@
 class ceilometer (
-  $enabled                = true,
-  $package_ensure         = true,
-
-  $log_verbose            = "False",
-  $log_debug              = "False",
-
-  $metering_api_port        = 9000,
-  $database_connection      = "mongodb://localhost:27017/ceilometer",
-
-  $os_auth_type             = "keystone",
-  $os_auth_host             = "localhost",
-  $os_auth_port             = "35357",
-  $os_auth_url              = "http://localhost:5000",
-  $os_auth_tenant           = "service",
-  $os_auth_user             = "ceilometer",
-  $os_auth_password         = "ChangeMe",
-
-  $periodic_interval        = "600",
-  $control_exchange         = "ceilometer",
-  $metering_secret          = "Changem3",
-  $metering_topic           = "metering",
-  $nova_control_exchange    = "nova",
-  $glance_control_exchange  = "nova",
-  $glance_registry_host     = "localhost",
-  $glance_registry_port     = "9191",
-  $cinder_control_exchange  = "cinder",
-  $quantum_control_exchange = "quantum",
-
-  $rabbit_host          = "localhost",
-  $rabbit_port          = "5672",
-  $rabbit_user          = "guest",
-  $rabbit_password      = "guest",
-  $rabbit_virtual_host  = "/",
-) {
+  $enabled                  = $ceilometer::config::enabled,
+  $package_ensure           = $ceilometer::config::package_ensure,
+  $verbose                  = $ceilometer::config::verbose,
+  $debug                    = $ceilometer::config::debug,
+  $metering_api_port        = $ceilometer::config::metering_api_port,
+  $database_connection      = $ceilometer::config::database_connection,
+  $auth_type                = $ceilometer::config::auth_type,
+  $auth_host                = $ceilometer::config::auth_host,
+  $auth_port                = $ceilometer::config::auth_port,
+  $auth_url                 = $ceilometer::config::auth_url,
+  $auth_tenant              = $ceilometer::config::auth_tenant,
+  $auth_user                = $ceilometer::config::auth_user,
+  $auth_password            = $ceilometer::config::auth_password,
+  $periodic_interval        = $ceilometer::config::periodic_interval,
+  $control_exchange         = $ceilometer::config::control_exchange,
+  $metering_secret          = $ceilometer::config::metering_secret,
+  $metering_topic           = $ceilometer::config::metering_topic,
+  $nova_control_exchange    = $ceilometer::config::nova_control_exchange,
+  $glance_control_exchange  = $ceilometer::config::glance_control_exchange,
+  $glance_registry_host     = $ceilometer::config::glance_registry_host,
+  $glance_registry_port     = $ceilometer::config::glance_registry_port,
+  $cinder_control_exchange  = $ceilometer::config::cinder_control_exchange,
+  $quantum_control_exchange = $ceilometer::config::quantum_control_exchange,
+  $rabbit_host              = $ceilometer::config::rabbit_host,
+  $rabbit_port              = $ceilometer::config::rabbit_port,
+  $rabbit_user              = $ceilometer::config::rabbit_user,
+  $rabbit_password          = $ceilometer::config::rabbit_password,
+  $rabbit_virtual_host      = $ceilometer::config::rabbit_virtual_host
+) inherits ceilometer::config {
   include ceilometer::params
 
   require "git"
@@ -92,18 +87,18 @@ class ceilometer (
   }
 
   ceilometer_config {
-    "DEFAULT/debug":                  value => $log_debug;
-    "DEFAULT/verbose":                value => $log_verbose;
+    "DEFAULT/debug":                  value => $debug;
+    "DEFAULT/verbose":                value => $verbose;
 
     "DEFAULT/metering_api_port":      value => $metering_api_port;
     "DEFAULT/database_connection":    value => $database_connection;
 
-    "DEFAULT/os_auth_host":             value => $os_auth_host;
-    "DEFAULT/os_auth_port":             value => $os_auth_port;
-    "DEFAULT/os_auth_url":              value => $os_auth_url;
-    "DEFAULT/os_auth_tenant":           value => $os_auth_tenant;
-    "DEFAULT/os_auth_user":             value => $os_auth_user;
-    "DEFAULT/os_auth_password":         value => $os_auth_password;
+    "DEFAULT/os_auth_host":             value => $auth_host;
+    "DEFAULT/os_auth_port":             value => $auth_port;
+    "DEFAULT/os_auth_url":              value => $auth_url;
+    "DEFAULT/os_auth_tenant":           value => $auth_tenant;
+    "DEFAULT/os_auth_user":             value => $auth_user;
+    "DEFAULT/os_auth_password":         value => $auth_password;
 
     "DEFAULT/periodic_interval":        value => $periodic_interval;
     "DEFAULT/control_exchange":         value => $control_exchange;
