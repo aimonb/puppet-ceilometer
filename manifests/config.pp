@@ -1,6 +1,6 @@
 class ceilometer::config {
   $enabled                  = true
-  $package_ensure           = present
+  $package_ensure           = true
   $verbose                  = 'False'
   $debug                    = 'False'
   $metering_api_port        = 9000
