@@ -1,6 +1,4 @@
 class ceilometer (
-  $enabled                  = $ceilometer::config::enabled,
-  $package_ensure           = $ceilometer::config::package_ensure,
   $verbose                  = $ceilometer::config::verbose,
   $debug                    = $ceilometer::config::debug,
   $metering_api_port        = $ceilometer::config::metering_api_port,
