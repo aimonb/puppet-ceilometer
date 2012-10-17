@@ -1,4 +1,6 @@
 define ceilometer::upstart ($enabled) {
+  Ceilometer_config<||> ~> Service["${name}-service"]
+
   file {"${name}-upstart-link":
     name   => "/etc/init.d/${name}",
     ensure => link,
@@ -26,6 +28,5 @@ define ceilometer::upstart ($enabled) {
     enable    => $enabled,
     provider  => upstart,
     require   => File["${name}-upstart"],
-    subscribe => File["ceilometer-etc"]
   }
 }
