@@ -1,6 +1,6 @@
 class ceilometer::agents::central (
-  $enabled        = $ceilometer::config::enabled,
-  $package_ensure = $ceilometer::config::package_ensure
+  $enabled        = true,
+  $package_ensure = true
 ) inherits ceilometer {
   ceilometer::upstart {$::ceilometer::params::agent_central_name:
     enabled => $enabled,
