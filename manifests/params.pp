@@ -4,10 +4,13 @@ class ceilometer::params {
   $agent_compute_name = "ceilometer-agent-compute"
   $collector_name     = "ceilometer-collector"
 
-  $user         = "ceilometer"
-  $group        = "ceilometer"
+  $user               = "ceilometer"
+  $group              = "ceilometer"
 
-  $source       = "git://github.com/stackforge/ceilometer"
-  $install_dir  = "/opt/ceilometer"
-  $revision     = "master"
+  $nova_group         = "nova"
+  $libvirt_group      = "libvirtd"
+
+  $source             = "git://github.com/stackforge/ceilometer"
+  $install_dir        = "/opt/ceilometer"
+  $revision           = "master"
 }

@@ -1,8 +1,9 @@
 class ceilometer::api (
   $enabled              = true,
-  $package_ensure       = true,
   $metering_api_port    = 9000
-) inherits ceilometer {
+)  {
+  include "ceilometer::params"
+
   ceilometer_config {
     "DEFAULT/metering_api_port":           value => $metering_api_port
   }

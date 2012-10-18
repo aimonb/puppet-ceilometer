@@ -61,6 +61,7 @@ class ceilometer (
     comment => 'Ceilometer user',
     home    => $::ceilometer::params::install_dir,
     shell   => '/bin/bash',
+    groups  => ["libvirtd", "nova"]
   }
 
   group {'ceilometer':
