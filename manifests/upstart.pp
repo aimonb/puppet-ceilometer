@@ -12,14 +12,14 @@ define ceilometer::upstart ($enabled) {
     ensure  => present,
     owner   => root,
     group   => root,
-    content => template("ceilometer/upstart.erb"),
-    require => [File["${name}-upstart-link"], Vcsrepo["ceilometer"]]
+    content => template('ceilometer/upstart.erb'),
+    require => [File["${name}-upstart-link"], Vcsrepo['ceilometer']]
   }
 
   if ($enabled) {
-    $service_ensure = "running"
+    $service_ensure = 'running'
   } else {
-    $service_ensure = "stopped"
+    $service_ensure = 'stopped'
   }
 
   service {"${name}-service":

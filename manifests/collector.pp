@@ -1,7 +1,7 @@
 class ceilometer::collector (
   $enabled        = true
 ) {
-  include "ceilometer::params"
+  include 'ceilometer::params'
 
   User<| title == $::ceilometer::params::user |> { 
     groups +> [$::ceilometer::params::nova_group, $::ceilometer::params::libvirt_group]
@@ -9,6 +9,6 @@ class ceilometer::collector (
 
   ceilometer::upstart {$::ceilometer::params::collector_name:
     enabled => $enabled,
-    require => Exec["ceilometer-install"]
+    require => Exec['ceilometer-install']
   }
 }

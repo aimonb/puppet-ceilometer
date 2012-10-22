@@ -52,7 +52,7 @@ class ceilometer (
     }
   }
 
-  package {"ceilometer-backend-package":
+  package {'ceilometer-backend-package':
     name   => $backend_package,
     ensure => present
   }
@@ -61,7 +61,7 @@ class ceilometer (
     comment => 'Ceilometer user',
     home    => $::ceilometer::params::install_dir,
     shell   => '/bin/bash',
-    groups  => ["libvirtd", "nova"]
+    groups  => ['libvirtd', 'nova']
   }
 
   group {'ceilometer':
