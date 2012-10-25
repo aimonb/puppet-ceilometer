@@ -3,13 +3,14 @@ class ceilometer (
   $debug                    = 'True',
   $metering_api_port        = 9000,
   $database_connection      = 'mongodb://localhost:27017/ceilometer',
-  $auth_type                = 'keystone',
   $auth_host                = 'localhost',
   $auth_port                = 35357,
-  $auth_url                 = 'http://localhost:5000',
-  $auth_tenant              = 'service',
+  $auth_protocol            = 'https',
   $auth_user                = 'ceilometer',
-  $auth_password            = 'ChangeMe',
+  $auth_password            = 'svcp4ss',
+  $auth_tenant_id           = '',
+  $auth_tenant_name         = 'service',
+  $auth_url                 = 'http://localhost:5000',
   $periodic_interval        = 600,
   $control_exchange         = 'ceilometer',
   $metering_secret          = 'Changem3',
@@ -103,12 +104,15 @@ class ceilometer (
 
     'DEFAULT/database_connection':      value => $database_connection;
 
-    'DEFAULT/os_auth_host':             value => $auth_host;
-    'DEFAULT/os_auth_port':             value => $auth_port;
     'DEFAULT/os_auth_url':              value => $auth_url;
-    'DEFAULT/os_auth_tenant':           value => $auth_tenant;
-    'DEFAULT/os_auth_user':             value => $auth_user;
-    'DEFAULT/os_auth_password':         value => $auth_password;
+    'DEFAULT/os_username':              value => $auth_user;
+    'DEFAULT/os_password':              value => $auth_password;
+    'DEFAULT/os_tenant_id':             value => $auth_tenant_id;
+    'DEFAULT/os_tenant_name':           value => $auth_tenant_name;
+
+    'DEFAULT/auth_host':                value => $auth_host;
+    'DEFAULT/auth_port':                value => $auth_port;
+    'DEFAULT/auth_protocol':            value => $auth_protocol;
 
     'DEFAULT/periodic_interval':        value => $periodic_interval;
     'DEFAULT/control_exchange':         value => $control_exchange;
