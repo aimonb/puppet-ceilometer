@@ -1,6 +1,6 @@
 class ceilometer::api (
   $enabled              = true,
-  $metering_api_port    = 9000
+  $metering_api_port    = 8777
 )  {
   include 'ceilometer::params'
 

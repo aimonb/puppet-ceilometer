@@ -107,7 +107,6 @@ class ceilometer (
     'DEFAULT/os_auth_url':              value => $auth_url;
     'DEFAULT/os_username':              value => $auth_user;
     'DEFAULT/os_password':              value => $auth_password;
-    'DEFAULT/os_tenant_id':             value => $auth_tenant_id;
     'DEFAULT/os_tenant_name':           value => $auth_tenant_name;
 
     'DEFAULT/auth_host':                value => $auth_host;
@@ -130,6 +129,12 @@ class ceilometer (
     'DEFAULT/rabbit_user':              value => $rabbit_user;
     'DEFAULT/rabbit_password':          value => $rabbit_password;
     'DEFAULT/rabbit_virtual_host':      value => $rabbit_virtual_host;
+  }
+
+  if $auth_tenant_id {
+    ceilometer_config {
+      'DEFAULT/os_tenant_id':             value => $auth_tenant_id;
+    }
   }
 
   vcsrepo {'ceilometer':
